@@ -1,0 +1,39 @@
+name: learn_russian
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  get: ^4.6.6
+  google_fonts: ^6.1.0
+  flutter_animate: ^4.2.0+1
+  speech_to_text: ^6.6.0
+  flutter_tts: ^3.8.5
+  lottie: ^2.7.0
+  cached_network_image: ^3.3.0
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/images/
+    - assets/animations/
+    - assets/sounds/
