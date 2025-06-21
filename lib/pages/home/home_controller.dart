@@ -93,14 +93,17 @@ class HomeController extends GetxController {
   // Search and filter methods
   void updateSearchQuery(String query) {
     _searchQuery.value = query.toLowerCase();
+    update(); // Trigger GetBuilder updates
   }
 
   void selectCategory(String category) {
     _selectedCategory.value = category;
+    update(); // Trigger GetBuilder updates
   }
 
   void toggleViewMode() {
     _isGridView.value = !_isGridView.value;
+    update(); // Trigger GetBuilder updates
   }
 
   List<ModuleModel> _getFilteredModules() {
@@ -186,6 +189,7 @@ class HomeController extends GetxController {
   // Progress methods
   Future<void> refreshData() async {
     await _loadData();
+    update(); // Refresh UI
   }
 
   // Theme methods

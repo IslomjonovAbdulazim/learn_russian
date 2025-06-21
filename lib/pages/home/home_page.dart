@@ -106,17 +106,19 @@ class _HomeContent extends GetView<HomeController> {
           decoration: InputDecoration(
             hintText: 'Modullarni qidirish...',
             prefixIcon: const Icon(Icons.search),
-            suffixIcon: Obx(() => controller.searchQuery.isNotEmpty
-                ? IconButton(
-              onPressed: () => controller.updateSearchQuery(''),
-              icon: const Icon(Icons.clear),
-            )
-                : IconButton(
-              onPressed: controller.toggleViewMode,
-              icon: Icon(controller.isGridView
-                  ? Icons.view_list
-                  : Icons.grid_view),
-            )),
+            suffixIcon: GetBuilder<HomeController>(
+              builder: (controller) => controller.searchQuery.isNotEmpty
+                  ? IconButton(
+                onPressed: () => controller.updateSearchQuery(''),
+                icon: const Icon(Icons.clear),
+              )
+                  : IconButton(
+                onPressed: controller.toggleViewMode,
+                icon: Icon(controller.isGridView
+                    ? Icons.view_list
+                    : Icons.grid_view),
+              ),
+            ),
           ),
         ),
       ),
@@ -125,47 +127,49 @@ class _HomeContent extends GetView<HomeController> {
 
   Widget _buildProgressSection() {
     return SliverToBoxAdapter(
-      child: Obx(() {
-        if (controller.inProgressModules.isEmpty &&
-            controller.completedModules == 0) {
-          return const SizedBox.shrink();
-        }
+      child: GetBuilder<HomeController>(
+        builder: (controller) {
+          if (controller.inProgressModules.isEmpty &&
+              controller.completedModules == 0) {
+            return const SizedBox.shrink();
+          }
 
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: AppColors.warmGradient,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.trending_up, color: Colors.white),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Sizning jarayoningiz',
-                    style: AppTextStyles.heading5.copyWith(color: Colors.white),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              LinearProgressIndicator(
-                value: controller.overallProgress,
-                backgroundColor: Colors.white30,
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                controller.progressText,
-                style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
-              ),
-            ],
-          ),
-        );
-      }),
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: AppColors.warmGradient,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.trending_up, color: Colors.white),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Sizning jarayoningiz',
+                      style: AppTextStyles.heading5.copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                LinearProgressIndicator(
+                  value: controller.overallProgress,
+                  backgroundColor: Colors.white30,
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  controller.progressText,
+                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -174,68 +178,72 @@ class _HomeContent extends GetView<HomeController> {
       child: Container(
         height: 50,
         margin: const EdgeInsets.symmetric(vertical: 8),
-        child: Obx(() => ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          itemCount: controller.categories.length,
-          itemBuilder: (context, index) {
-            final category = controller.categories[index];
-            final isSelected = controller.selectedCategory == category;
-            final displayName = controller.getCategoryDisplayName(category);
+        child: GetBuilder<HomeController>(
+          builder: (controller) => ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: controller.categories.length,
+            itemBuilder: (context, index) {
+              final category = controller.categories[index];
+              final isSelected = controller.selectedCategory == category;
+              final displayName = controller.getCategoryDisplayName(category);
 
-            return Container(
-              margin: const EdgeInsets.only(right: 8),
-              child: FilterChip(
-                label: Text(displayName),
-                selected: isSelected,
-                onSelected: (_) => controller.selectCategory(category),
-                backgroundColor: AppColors.lightSurface,
-                selectedColor: AppColors.primaryBlue,
-                labelStyle: TextStyle(
-                  color: isSelected ? Colors.white : null,
+              return Container(
+                margin: const EdgeInsets.only(right: 8),
+                child: FilterChip(
+                  label: Text(displayName),
+                  selected: isSelected,
+                  onSelected: (_) => controller.selectCategory(category),
+                  backgroundColor: AppColors.lightSurface,
+                  selectedColor: AppColors.primaryBlue,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : null,
+                  ),
                 ),
-              ),
-            );
-          },
-        )),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildFeaturedSection() {
     return SliverToBoxAdapter(
-      child: Obx(() {
-        final featured = controller.featuredModules;
-        if (featured.isEmpty) return const SizedBox.shrink();
+      child: GetBuilder<HomeController>(
+        builder: (controller) {
+          final featured = controller.featuredModules;
+          if (featured.isEmpty) return const SizedBox.shrink();
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                'Tavsiya etilgan',
-                style: AppTextStyles.heading4,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  'Tavsiya etilgan',
+                  style: AppTextStyles.heading4,
+                ),
               ),
-            ),
-            Container(
-              height: 180,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: featured.length,
-                itemBuilder: (context, index) {
-                  final module = featured[index];
-                  return _FeaturedModuleCard(
-                    module: module,
-                    onTap: () => controller.goToModule(module),
-                  );
-                },
+              Container(
+                height: 180,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: featured.length,
+                  itemBuilder: (context, index) {
+                    final module = featured[index];
+                    return _FeaturedModuleCard(
+                      module: module,
+                      onTap: () => controller.goToModule(module),
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
-        );
-      }),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -251,9 +259,11 @@ class _HomeContent extends GetView<HomeController> {
               style: AppTextStyles.heading4,
             ),
             const SizedBox(height: 16),
-            Obx(() => controller.isGridView
-                ? _buildModulesGrid()
-                : _buildModulesList()),
+            GetBuilder<HomeController>(
+              builder: (controller) => controller.isGridView
+                  ? _buildModulesGrid()
+                  : _buildModulesList(),
+            ),
           ],
         ),
       ),
@@ -261,41 +271,45 @@ class _HomeContent extends GetView<HomeController> {
   }
 
   Widget _buildModulesGrid() {
-    return Obx(() => GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.8,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+    return GetBuilder<HomeController>(
+      builder: (controller) => GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.8,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+        ),
+        itemCount: controller.filteredModules.length,
+        itemBuilder: (context, index) {
+          final module = controller.filteredModules[index];
+          return _ModuleGridCard(
+            module: module,
+            onTap: () => controller.goToModule(module),
+            onDetails: () => controller.showModuleDetails(module),
+          );
+        },
       ),
-      itemCount: controller.filteredModules.length,
-      itemBuilder: (context, index) {
-        final module = controller.filteredModules[index];
-        return _ModuleGridCard(
-          module: module,
-          onTap: () => controller.goToModule(module),
-          onDetails: () => controller.showModuleDetails(module),
-        );
-      },
-    ));
+    );
   }
 
   Widget _buildModulesList() {
-    return Obx(() => ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: controller.filteredModules.length,
-      itemBuilder: (context, index) {
-        final module = controller.filteredModules[index];
-        return _ModuleListCard(
-          module: module,
-          onTap: () => controller.goToModule(module),
-          onDetails: () => controller.showModuleDetails(module),
-        );
-      },
-    ));
+    return GetBuilder<HomeController>(
+      builder: (controller) => ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: controller.filteredModules.length,
+        itemBuilder: (context, index) {
+          final module = controller.filteredModules[index];
+          return _ModuleListCard(
+            module: module,
+            onTap: () => controller.goToModule(module),
+            onDetails: () => controller.showModuleDetails(module),
+          );
+        },
+      ),
+    );
   }
 }
 
